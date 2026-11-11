@@ -1,0 +1,11 @@
+L'histoire d'Internet
+
+Internet a commencé dans les années 1960 sous la forme d'un projet militaire américain appelé ARPANET, développé par l'agence ARPA (Advanced Research Projects Agency). L'objectif initial était de créer un réseau de communication capable de résister à une destruction partielle, notamment en cas d'attaque nucléaire. ARPANET a d'abord relié des ordinateurs dans quatre universités en 1969.
+
+Dans les années 1970, les chercheurs Vint Cerf et Bob Kahn ont développé la suite de protocoles TCP/IP, qui est devenue le langage de communication fondamental d'Internet. TCP/IP a permis à des réseaux différents de s'interconnecter, transformant des systèmes isolés en un seul réseau mondial. Le 1er janvier 1983, ARPANET a officiellement adopté TCP/IP, date souvent considérée comme la naissance de l'Internet moderne.
+
+Les années 1990 ont apporté le World Wide Web, inventé par Tim Berners-Lee au CERN en 1989. Le Web a rendu Internet accessible aux utilisateurs non techniques en introduisant l'hypertexte, les navigateurs et les sites web. Le premier navigateur graphique, Mosaic, est sorti en 1993 et a déclenché une adoption publique rapide.
+
+Au début des années 2000, Internet était devenu un service public mondial. Le haut débit a remplacé les connexions par modem, les appareils mobiles ont apporté l'accès à Internet à des milliards de personnes, et des plateformes comme Google, Wikipédia et les réseaux sociaux ont transformé la recherche d'information et la communication.
+
+Aujourd'hui, Internet relie plus de cinq milliards de personnes et soutient presque tous les aspects de la vie moderne, de l'éducation au commerce, en passant par la santé et le gouvernement. Son histoire reflète une collaboration entre gouvernements, universités et industrie privée pendant plus d'un demi-siècle.

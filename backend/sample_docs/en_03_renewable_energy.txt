@@ -1,0 +1,11 @@
+Renewable Energy
+
+Renewable energy comes from natural sources that are continuously replenished and never run out. Unlike fossil fuels, which take millions of years to form and are finite, renewable sources provide clean and sustainable power for electricity, heating, and transportation.
+
+The most common types of renewable energy are solar, wind, hydroelectric, geothermal, and biomass. Solar energy works by capturing sunlight with photovoltaic panels that convert photons into electricity. Wind energy uses large turbines that spin when the wind blows, generating electricity through a generator. Hydroelectric power harnesses the energy of moving water, typically from rivers or dams.
+
+Renewable energy is important because it produces little or no greenhouse gas emissions. This makes it a critical tool in fighting climate change and reducing air pollution. It also improves energy security by reducing dependence on imported fuels and creates jobs in manufacturing, installation, and maintenance.
+
+The cost of renewable energy has fallen dramatically in recent years. Solar panels and wind turbines are now cheaper than fossil fuel power plants in most parts of the world. As a result, renewable capacity is growing rapidly, especially in China, the United States, and Europe.
+
+Despite this progress, challenges remain. Renewable sources are intermittent — the sun does not always shine and the wind does not always blow. Energy storage technologies, such as batteries and pumped hydro, are essential to provide reliable power when generation is low. Smart grids and demand management also help balance supply and demand.

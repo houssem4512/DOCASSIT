@@ -1,0 +1,50 @@
+# ============================================================
+# Django + DRF (existing backend)
+# ============================================================
+Django>=5.0,<6.0
+djangorestframework>=3.15
+django-cors-headers>=4.3
+Pillow>=10.0
+python-dotenv>=1.0          # Load .env file in backend/ — put your API keys there
+
+# ============================================================
+# AI / RAG stack (NEW)
+# ============================================================
+# --- Frameworks (requirement: LangChain and/or LangGraph) ---
+langchain>=0.3
+langchain-core>=0.3
+langchain-community>=0.3
+langchain-chroma>=0.1.4          # Chroma vector store adapter for LangChain
+langchain-openai>=0.2            # OpenAI LLM + embeddings adapter
+langchain-ollama>=0.2            # Local Ollama LLM adapter (no API key)
+langgraph>=0.2                   # Stateful agent graph (requirement: LangGraph)
+
+# --- Embeddings (multilingual: ar + fr + en) ---
+sentence-transformers>=3.0       # Loads paraphrase-multilingual-MiniLM-L12-v2
+
+# --- Vector store ---
+chromadb>=0.5                    # File-based persistent vector DB (zero setup)
+
+# --- Document extraction ---
+pypdf>=4.0                       # PDF text extraction
+python-docx>=1.1                 # DOCX text extraction
+
+# --- Language detection & tokenization ---
+langdetect>=1.0                  # Better than the regex heuristic in engine.py
+tiktoken>=0.7                    # Token counting for LLM context limits
+
+# --- LLM providers (pick one via LLM_PROVIDER env var) ---
+openai>=1.40                     # Used when LLM_PROVIDER=openai
+langchain-groq>=0.2              # Used when LLM_PROVIDER=groq (free cloud, recommended)
+# ollama is a separate binary; install from https://ollama.com if you pick LLM_PROVIDER=ollama
+
+# --- MCP server (requirement: Tool Calling / MCP) ---
+mcp>=1.0                         # FastMCP server with stdio transport
+
+# --- Benchmarking (requirement: evaluation of retrieval + generation) ---
+ragas>=0.1                       # RAG evaluation: faithfulness, answer relevancy
+datasets>=2.20                   # RAGAS internal dependency
+
+# --- Fine-tuning (requirement: compare embedding model before/after training) ---
+torch>=2.2                       # sentence-transformers training backend
+# (GPU recommended; works on CPU for small models)

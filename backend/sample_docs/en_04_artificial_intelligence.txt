@@ -1,0 +1,11 @@
+Artificial Intelligence
+
+Artificial intelligence, or AI, is the ability of machines to simulate human intelligence in tasks such as learning, reasoning, problem-solving, and decision-making. Rather than being explicitly programmed for each task, AI systems learn patterns from data and improve their performance over time.
+
+The field of AI was formally founded in 1956 at the Dartmouth Conference, where researchers first proposed that machines could be made to think. Early AI focused on symbolic reasoning and rule-based systems. However, progress was limited by the computing power and data available at the time.
+
+Modern AI is dominated by machine learning, especially deep learning, which uses artificial neural networks with many layers. These networks learn hierarchical representations of data, enabling breakthroughs in image recognition, speech understanding, and natural language processing.
+
+Large language models, such as those powering chatbots and translation services, are trained on vast amounts of text and can generate human-like responses. They use a transformer architecture that processes words in context, allowing them to capture meaning across long passages.
+
+AI applications are now everywhere: recommendation systems on streaming platforms, voice assistants on smartphones, autonomous vehicles, medical diagnosis tools, and fraud detection in banking. While AI offers enormous benefits, it also raises ethical questions about privacy, bias, job displacement, and the responsible use of autonomous systems.

@@ -1,0 +1,11 @@
+L'intelligence artificielle
+
+L'intelligence artificielle, ou IA, est la capacité des machines à simuler l'intelligence humaine dans des tâches telles que l'apprentissage, le raisonnement, la résolution de problèmes et la prise de décisions. Plutôt que d'être explicitement programmées pour chaque tâche, les systèmes d'IA apprennent des modèles à partir de données et améliorent leurs performances au fil du temps.
+
+Le domaine de l'IA a été formellement fondé en 1956 lors de la conférence de Dartmouth, où des chercheurs ont proposé pour la première fois que les machines puissent être amenées à penser. L'IA précoce se concentrait sur le raisonnement symbolique et les systèmes basés sur des règles. Cependant, les progrès étaient limités par la puissance de calcul et les données disponibles à l'époque.
+
+L'IA moderne est dominée par l'apprentissage automatique, en particulier l'apprentissage profond, qui utilise des réseaux de neurones artificiels à plusieurs couches. Ces réseaux apprennent des représentations hiérarchiques des données, permettant des avancées dans la reconnaissance d'images, la compréhension de la parole et le traitement du langage naturel.
+
+Les grands modèles de langage, comme ceux qui alimentent les chatbots et les services de traduction, sont entraînés sur d'immenses quantités de texte et peuvent générer des réponses de type humain. Ils utilisent une architecture transformeur qui traite les mots dans leur contexte, ce qui leur permet de capturer le sens sur de longs passages.
+
+Les applications de l'IA sont aujourd'hui partout : systèmes de recommandation sur les plateformes de streaming, assistants vocaux sur les smartphones, véhicules autonomes, outils de diagnostic médical et détection de fraude bancaire. Bien que l'IA offre d'énormes avantages, elle soulève aussi des questions éthiques sur la vie privée, les biais, la perte d'emplois et l'utilisation responsable des systèmes autonomes.
