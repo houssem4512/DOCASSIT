@@ -14,42 +14,20 @@ questions with citations — without going through the Django HTTP API.
 
 THE 3 TOOLS (matches the project brief exactly)
 -----------------------------------------------
-1. ingest_document(file_path, language=None) → {status, pages, language, error}
-   Read a file from disk and add it to the vector index. `language` is
-   auto-detected if omitted.
+1. ingest_document(file_path, language=None) -> dict
+   Read a file from disk and add it to the vector index.
 
-2. search_by_language(query, language, k=5) → list of passages
+2. search_by_language(query, language, k=5) -> list
    Semantic search restricted to chunks in a specific language (ar/fr/en).
    This is the headline feature: ask in Arabic, retrieve French passages.
 
-3. answer_with_citations(query, language=None) → {answer, language, sources}
-   Full RAG: retrieve → generate → cite. Returns the answer + the source
-   passages used.
+3. answer_with_citations(query, language=None) -> dict
+   Full RAG: retrieve -> generate -> cite.
 
 RUNNING
 -------
-Stdio transport (standard for local MCP servers):
     python -m mcp_server.server
-
-Inspect / test interactively with the official MCP Inspector:
     mcp dev backend/mcp_server/server.py
-
-Connect from Claude Desktop (add to `claude_desktop_config.json`):
-    {
-      "mcpServers": {
-        "docassist": {
-          "command": "python",
-          "args": ["-m", "mcp_server.server"],
-          "cwd": "/path/to/docassist/backend"
-        }
-      }
-    }
-
-WHY THE TOOLS DELEGATE TO `get_engine()`
-----------------------------------------
-The MCP server and the Django API share the same engine — there's a single
-source of truth for ingest/search/answer logic. Updates to `rag/my_engine.py`
-automatically benefit both interfaces.
 """
 from __future__ import annotations
 import os
@@ -68,9 +46,14 @@ import django  # noqa: E402
 try:
     django.setup()
 except Exception:
-    pass  # already setup or running outside Django context — tool calls will fail loudly
+    pass  # already setup or running outside Django context
 
-from mcp.server.fastmcp import FastMCP  # noqa: E402
+# MCP version compatibility: MCP 2.x renamed FastMCP to MCPServer.
+# This try/except makes the file work with both MCP 1.x and 2.x.
+try:
+    from mcp.server.fastmcp import FastMCP  # MCP 1.x
+except (ImportError, ModuleNotFoundError):
+    from mcp.server.mcpserver import MCPServer as FastMCP  # MCP 2.x (FastMCP was renamed)
 
 from rag.engine import get_engine  # noqa: E402
 from rag.extractors import extract  # noqa: E402
@@ -90,22 +73,22 @@ def ingest_document(file_path: str, language: str | None = None) -> dict:
                    If omitted, the language is auto-detected from the text.
 
     Returns:
-        {"status": "ready"|"failed", "pages": int, "language": str, "error": str|null}
+        {"status": "ready"|"failed", "pages": int, "language": str,
+         "error": str|null, "chunks_indexed": int}
     """
     p = Path(file_path).expanduser().resolve()
     if not p.exists():
-        return {"status": "failed", "pages": 0, "language": "en", "error": f"File not found: {p}"}
+        return {"status": "failed", "pages": 0, "language": "en",
+                "error": f"File not found: {p}"}
 
     result = extract(p)
     if result.get("error"):
-        return {"status": "failed", "pages": 0, "language": "en", "error": result["error"]}
+        return {"status": "failed", "pages": 0, "language": "en",
+                "error": result["error"]}
 
     text = result["text"]
     detected = language or _detect_language_better(text)
 
-    # Use the engine's chunker + embeddings + vectorstore directly.
-    # We don't have a Django Document row here (file is outside the upload flow),
-    # so we use doc_id=0 and a synthetic title from the filename.
     from rag.chunker import chunk as chunk_fn
     from rag.vectorstore import get_store
 
@@ -155,7 +138,6 @@ def search_by_language(query: str, language: str, k: int = 5) -> list:
         return [{"error": f"language must be ar, fr, or en — got '{language}'"}]
     k = max(1, min(int(k), 20))
     engine = get_engine()
-    # user=None is fine: search doesn't actually use the user when language filter is set
     return engine.search(query, user=None, language=language, top_k=k)
 
 
@@ -164,8 +146,8 @@ def answer_with_citations(query: str, language: str | None = None) -> dict:
     """
     Answer a question using the indexed documents, with citations.
 
-    Pipeline: detect question language (if not given) → retrieve top-k chunks
-    (cross-lingual) → generate answer in the question's language → attach sources.
+    Pipeline: detect question language (if not given) -> retrieve top-k chunks
+    (cross-lingual) -> generate answer in the question's language -> attach sources.
 
     Args:
         query:    The question (any language).
@@ -174,11 +156,9 @@ def answer_with_citations(query: str, language: str | None = None) -> dict:
 
     Returns:
         {
-            "answer":   str,         # the generated answer (or a notice if LLM_PROVIDER=none)
-            "language": str,         # the answer language
-            "sources":  [            # the passages used to generate the answer
-                {"document_id", "title", "page", "snippet", "score"}
-            ]
+            "answer":   str,    # the generated answer (or a notice if LLM_PROVIDER=none)
+            "language": str,    # the answer language
+            "sources":  list    # the passages used to generate the answer
         }
     """
     engine = get_engine()
@@ -190,14 +170,20 @@ def list_indexed_languages() -> dict:
     """
     Bonus tool: report how many chunks are indexed per language.
     Useful for MCP clients to discover the corpus before querying.
+
+    Chroma 1.x compatibility note:
+      Older Chroma (<0.5) supported `collection.count(where=...)`.
+      Newer Chroma (>=1.0) removed the `where` argument from `count()`.
+      We use `collection.get(where=...)` and count the returned IDs instead —
+      this works on both old and new Chroma versions.
     """
     from rag.vectorstore import get_store
     try:
         store = get_store()
         col = store._collection
-        ar = col.count(where={"language": "ar"})
-        fr = col.count(where={"language": "fr"})
-        en = col.count(where={"language": "en"})
+        ar = len(col.get(where={"language": "ar"})["ids"])
+        fr = len(col.get(where={"language": "fr"})["ids"])
+        en = len(col.get(where={"language": "en"})["ids"])
         return {"ar": ar, "fr": fr, "en": en, "total": ar + fr + en}
     except Exception as e:
         return {"error": str(e)}

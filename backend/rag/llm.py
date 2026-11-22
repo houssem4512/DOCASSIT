@@ -114,7 +114,7 @@ def _build_llm() -> BaseChatModel:
             model=settings.GROQ_MODEL,
             api_key=settings.GROQ_API_KEY,
             temperature=0.2,
-            max_tokens=1024,
+            max_tokens=512,
         )
     if provider == "ollama":
         from langchain_ollama import ChatOllama

@@ -78,8 +78,19 @@ def reciprocal_rank(retrieved_doc_ids, expected_doc_ids):
 
 
 def ndcg_at_k(retrieved_doc_ids, expected_doc_ids, k):
+    """nDCG@k with deduplication — each relevant doc is counted only once,
+    even if multiple chunks from the same doc appear in the results.
+    This ensures nDCG stays in [0, 1]."""
+    # Deduplicate retrieved_doc_ids while preserving order
+    seen = set()
+    unique_retrieved = []
+    for did in retrieved_doc_ids[:k]:
+        if did not in seen:
+            seen.add(did)
+            unique_retrieved.append(did)
+
     dcg = 0.0
-    for i, did in enumerate(retrieved_doc_ids[:k], start=1):
+    for i, did in enumerate(unique_retrieved, start=1):
         if did in expected_doc_ids:
             dcg += 1.0 / math.log2(i + 1)
     ideal_hits = min(len(expected_doc_ids), k)

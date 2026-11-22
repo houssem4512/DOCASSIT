@@ -44,6 +44,18 @@ export default function Chat() {
   };
   const attached = (docs.data || []).filter((d) => docIds.includes(d.id));
 
+  // Deduplicate sources by (title + page) — avoids showing the same passage twice
+  const dedupeSources = (sources) => {
+    if (!sources || sources.length === 0) return [];
+    const seen = new Set();
+    return sources.filter((s) => {
+      const key = `${s.title}-${s.page}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+
   return (
     <div className="chat">
       <Card className="chat-list">
@@ -57,10 +69,21 @@ export default function Chat() {
         </div>
         <div className="msgs">
           {msgs.length === 0 && <div className="empty" style={{ margin: "auto" }}><b>{t("askNow")}</b>العربية · Français · English</div>}
-          {msgs.map((m, i) => (
-            <div key={m.id + "-" + i} className={"bubble " + m.role} dir="auto">{m.content}
-              {m.sources?.length > 0 && <div className="src"><b>{t("sources")}</b>{m.sources.map((s, k) => <div key={k}>• {s.title} · p.{s.page}</div>)}</div>}
-            </div>))}
+          {msgs.map((m, i) => {
+            const uniqueSources = dedupeSources(m.sources);
+            return (
+              <div key={m.id + "-" + i} className={"bubble " + m.role} dir="auto">{m.content}
+                {uniqueSources.length > 0 && (
+                  <div className="src">
+                    <b>{t("sources")}</b>
+                    {uniqueSources.map((s, k) => (
+                      <div key={k}>• {s.title} · p.{s.page}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
           {busy && <div className="bubble assistant typing"><span /><span /><span /></div>}
           <div ref={end} />
         </div>
